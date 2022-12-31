@@ -1,12 +1,56 @@
 import { useEffect, useRef } from 'react'
+import {
+  createStyles,
+  Paper,
+  Title,
+  Text,
+  TextInput,
+  Button,
+  Container,
+  Group,
+  Anchor,
+  Center,
+  Box,
+} from '@mantine/core'
+import { IconArrowLeft } from '@tabler/icons'
+
+const useStyles = createStyles((theme) => ({
+  title: {
+    fontSize: 26,
+    fontWeight: 900,
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+  },
+
+  controls: {
+    [theme.fn.smallerThan('xs')]: {
+      flexDirection: 'column-reverse',
+    },
+  },
+
+  control: {
+    [theme.fn.smallerThan('xs')]: {
+      width: '100%',
+      textAlign: 'center',
+    },
+  },
+}))
 
 import { useAuth } from '@redwoodjs/auth'
-import { Form, Label, TextField, Submit, FieldError } from '@redwoodjs/forms'
-import { navigate, routes } from '@redwoodjs/router'
+import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
+import { useForm } from '@mantine/form'
 
 const ForgotPasswordPage = () => {
+  const form = useForm({
+    initialValues: {
+      email: '',
+    },
+
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+    },
+  })
   const { isAuthenticated, forgotPassword } = useAuth()
 
   useEffect(() => {
@@ -36,54 +80,47 @@ const ForgotPasswordPage = () => {
       navigate(routes.login())
     }
   }
-
+  const { classes } = useStyles()
   return (
     <>
       <MetaTags title="Forgot Password" />
 
-      <main className="rw-main">
-        <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <div className="rw-scaffold rw-login-container">
-          <div className="rw-segment">
-            <header className="rw-segment-header">
-              <h2 className="rw-heading rw-heading-secondary">
-                Forgot Password
-              </h2>
-            </header>
-
-            <div className="rw-segment-main">
-              <div className="rw-form-wrapper">
-                <Form onSubmit={onSubmit} className="rw-form-wrapper">
-                  <div className="text-left">
-                    <Label
-                      name="username"
-                      className="rw-label"
-                      errorClassName="rw-label rw-label-error"
-                    >
-                      Username
-                    </Label>
-                    <TextField
-                      name="username"
-                      className="rw-input"
-                      errorClassName="rw-input rw-input-error"
-                      ref={usernameRef}
-                      validation={{
-                        required: true,
-                      }}
-                    />
-
-                    <FieldError name="username" className="rw-field-error" />
-                  </div>
-
-                  <div className="rw-button-group">
-                    <Submit className="rw-button rw-button-blue">Submit</Submit>
-                  </div>
-                </Form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
+      <Container size={460} my={30}>
+        <Title className={classes.title} align="center">
+          Forgot your password?
+        </Title>
+        <Text color="dimmed" size="sm" align="center">
+          Enter your email to get a reset link
+        </Text>
+        <form onSubmit={form.onSubmit((values) => onSubmit(values.email))}>
+          <Paper withBorder shadow="md" p={30} radius="md" mt="xl">
+            <TextInput
+              size="md"
+              radius={'md'}
+              label="Your email"
+              placeholder="Your email"
+              {...form.getInputProps('email')}
+              withAsterisk
+            />
+            <Group position="apart" mt="lg" className={classes.controls}>
+              <Anchor color="dimmed" size="sm" className={classes.control}>
+                <Center inline>
+                  <IconArrowLeft size={12} stroke={1.5} />
+                  <Box ml={5}>
+                    <Link to={routes.login()} className="vb">
+                      Back to login page
+                    </Link>
+                  </Box>
+                </Center>
+              </Anchor>
+              <Button className={classes.control} type="submit" color="indigo">
+                Send mail
+              </Button>
+            </Group>
+          </Paper>
+        </form>
+      </Container>
     </>
   )
 }
