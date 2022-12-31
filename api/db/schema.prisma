@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlite"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
 
@@ -8,11 +8,73 @@ generator client {
   binaryTargets = "native"
 }
 
-// Define your own datamodels here and run `yarn redwood prisma migrate dev`
-// to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model User {
+  id                  Int           @id @default(sequence())
+  email               String        @unique
+  name                String?
+  verified            Boolean       @default(false)
+  about               String?
+  website             String?
+  other               String?
+  avatar              String?
+  cover               String?
+  role                String?       @default("user")
+  hashedPassword      String
+  salt                String
+  resetToken          String?
+  resetTokenExpiresAt DateTime?
+  Video               Video[]
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  Comment             Comment[]
+  Subscribers         Subscribers[]
+  Cmmt                Cmmt[]
+}
+
+model Comment {
+  id        Int      @id @default(sequence())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  content   String
+  videoId   Int
+  rating    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Video {
+  id          Int      @id @default(sequence())
+  title       String
+  description String
+  author      User?    @relation(fields: [authorId], references: [id])
+  authorId    Int
+  url         String
+  thumbnail   String?
+  tags        String
+  published   String
+  views       Int?     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Subscribers {
+  id        Int      @id @default(sequence())
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int
+  channel   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Cmmt {
+  id        Int      @id @default(sequence())
+  content   String
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int
+  children  Cmmt[]   @relation("cmmt_children")
+  parent    Cmmt?    @relation("cmmt_children", fields: [parentId], references: [id])
+  parentId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cmmtId    Int?
 }

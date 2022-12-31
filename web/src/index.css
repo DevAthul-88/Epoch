@@ -1,0 +1,18 @@
+@import url(https://fonts.bunny.net/css?family=noto-sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
+
+html,
+body {
+  font-family: 'Noto Sans', sans-serif !important;
+}
+.activeLink {
+  background-color: rgba(231, 245, 255, 1) !important;
+  color: #343a40 !important;
+}
+.image img{
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.vb{
+  color: #4c6ef5 !important;
+}
