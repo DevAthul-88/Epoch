@@ -37,10 +37,4 @@ export const Cmmt = {
   author: (_obj, { root }) => {
     return db.cmmt.findUnique({ where: { id: root?.id } }).author()
   },
-  children: (_obj, { root }) => {
-    return db.cmmt.findUnique({ where: { id: root?.id } }).children()
-  },
-  parent: (_obj, { root }) => {
-    return db.cmmt.findUnique({ where: { id: root?.id } }).parent()
-  },
 }

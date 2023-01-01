@@ -71,10 +71,7 @@ model Cmmt {
   content   String
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int
-  children  Cmmt[]   @relation("cmmt_children")
-  parent    Cmmt?    @relation("cmmt_children", fields: [parentId], references: [id])
   parentId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  cmmtId    Int?
 }

@@ -4,12 +4,9 @@ export const schema = gql`
     content: String!
     author: User
     authorId: Int!
-    children: [Cmmt]!
-    parent: Cmmt
     parentId: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
-    cmmtId: Int
   }
 
   type Query {
@@ -21,14 +18,12 @@ export const schema = gql`
     content: String!
     authorId: Int!
     parentId: Int!
-    cmmtId: Int
   }
 
   input UpdateCmmtInput {
     content: String
     authorId: Int
     parentId: Int
-    cmmtId: Int
   }
 
   type Mutation {

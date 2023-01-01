@@ -73,14 +73,6 @@ export function Banner({ User }) {
           ) : null}
         </>
       )}
-      <Link to={"/mailto?to="+User?.email}>
-      <Button color="gray" leftIcon={<IconMail />}>
-        <strong>Send mail</strong>
-      </Button>
-      </Link>
-      <Button color="green" leftIcon={<IconHomeDollar />}>
-        <strong>Send donations</strong>
-      </Button>
       </Group>
     </Card>
   )

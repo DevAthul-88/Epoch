@@ -21,7 +21,7 @@ export const schema = gql`
     videosPage(page: Int): VideosPage @skipAuth
     videosPaged(page: Int): VideosPage @skipAuth
     video(id: Int!): Video @skipAuth
-    videoByUser(id: Int!): [Video!]! @requireAuth
+    videoByUser(id: Int!): [Video!]! @skipAuth
     videostag(tag: String!): [Video!]! @skipAuth
     videostagSimilar(tag: String!): [Video!]! @skipAuth
     videostagd(tag: String!): [Video!]! @skipAuth
