@@ -18,6 +18,7 @@ const App = () => (
             withGlobalStyles
             withNormalizeCSS
             theme={{
+              fontFamily: 'Roboto, sans-serif',
               focusRing: 'always',
               focusRingStyles: {
                 styles: (theme) => ({
@@ -27,12 +28,10 @@ const App = () => (
                   outline: `2px solid ${theme.colors.indigo[5]}`,
                 }),
               },
-
-              fontFamily: "Inter, sans-serif",
             }}
           >
             <ModalsProvider>
-            <Routes />
+              <Routes />
             </ModalsProvider>
           </MantineProvider>
         </RedwoodApolloProvider>
